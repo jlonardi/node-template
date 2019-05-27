@@ -1,0 +1,23 @@
+{
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "globals": {
+    "_": true
+  },
+  "rules": {
+    "import/extensions": "off",
+    "prettier/prettier": ["error"],
+    "import/named": "off",
+    "camelcase": "off"
+  },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jquery": true,
+    "node": true
+  }
+}

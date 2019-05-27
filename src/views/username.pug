@@ -1,0 +1,11 @@
+extends layout.pug
+
+block content
+  .container
+    header
+      h4 Before startting to chat you need to choose a username.
+    form(action='/username' method='post')
+      .form-group
+        input.form-control(type='text' name='username' id='username-input' aria-describedby="username-helper" required minlength="2" placeholder='username')
+        small.form-text.text-muted(id='username-helper') Your username will be show to other users
+      button(type="submit" class="btn btn-primary") Submit
