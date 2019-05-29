@@ -25,16 +25,40 @@ body {
 
 .portrait-wrapper {
   position: relative;
-  border-radius: 50%;
   top: 0.9em;
   overflow: hidden;
   display: inline-grid;
   margin-right: 1em;
 }
+
+.portrait-section {
+  width: 5em;
+  display: flex;
+  justify-content: center;
+  padding-top: 1em;
+}
+
+.chat-card {
+  background-color: #f1f1f1;
+  display: flex;
+  margin: 1rem 0 1rem 0;
+  width: 70%;
+  border-radius: 3px;
+}
+
+.chat-section {
+}
+
 .portrait {
   width: 3em;
   height: 3em;
-  transform: scale(1.2);
+  border-radius: 50%;
+}
+
+.own-message {
+  align-self: flex-end;
+  background-color: #d5ffd5;
+  margin-top: 0px;
 }
 
 .page-title {
@@ -86,6 +110,9 @@ header {
   max-height: 50vh;
   min-height: 50vh;
   overflow: scroll;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 #chat-header {
@@ -104,4 +131,8 @@ header {
 .chat-item {
   opacity: 1;
   transition: opacity 1s;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
 }

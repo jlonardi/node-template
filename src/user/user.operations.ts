@@ -6,6 +6,7 @@ export interface IMessage {
   message: string;
   message_id: string;
   created_at: string;
+  user_id: string;
 }
 
 export interface IUser {
@@ -83,7 +84,7 @@ export const sendMessage = async (userId: string, message: string): Promise<IMes
 export const getMessages = async (): Promise<IMessage[]> => {
   try {
     const res = await queryRowsAsync(
-      `SELECT username, picture, message, message_id, messages.created_at FROM messages NATURAL JOIN users
+      `SELECT user_id, username, picture, message, message_id, messages.created_at FROM messages NATURAL JOIN users
       ORDER BY created_at DESC`
     );
     return res;

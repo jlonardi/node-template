@@ -1,4 +1,6 @@
+import _ from 'lodash/fp';
 import * as operations from './user.operations';
+import { IAuthUser } from '../auth/auth.routes';
 
 export const validUsername = (username: string) => username && username.length > 1;
 
@@ -13,4 +15,16 @@ const validateMessage = (message = '') => message.length > 0;
 export const sendMessage = (userId: string, message: string) =>
   validateMessage(message) ? operations.sendMessage(userId, message) : false;
 
-export const getMessages = () => operations.getMessages();
+export const getMessages = async (user: IAuthUser) => {
+  const messages = await operations.getMessages();
+  const assignOwner = _.map<operations.IMessage, any>(m => ({
+    ...m,
+    owner: m.user_id === user.id
+  }));
+  const removeUserIds = _.map(_.omit('user_id'));
+  const premareMessages = _.compose(
+    removeUserIds,
+    assignOwner
+  );
+  return premareMessages(messages);
+};

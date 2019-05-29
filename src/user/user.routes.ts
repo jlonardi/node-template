@@ -34,9 +34,9 @@ router.post('/username', requiresAuthentication, (req, res, next) =>
   service.setUsername(req.user.id, req.body.username) ? res.redirect('/chat') : next()
 );
 
-router.get('/messages', requiresAuthentication, async (_req, res, next) => {
+router.get('/messages', requiresAuthentication, async (req, res, next) => {
   try {
-    const messages = await service.getMessages();
+    const messages = await service.getMessages(req.user);
     res.json(messages);
   } catch (e) {
     next(e);

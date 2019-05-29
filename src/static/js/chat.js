@@ -1,16 +1,25 @@
 import { post, get } from './requests.js';
+import * as dom from './dom.js';
 
 let displayedMessages = [];
 
 const send = post('/messages');
 
-const buildElements = ({ username, message, message_id }) => {
-  const listItem = $('<li>', { class: 'chat-item' }).attr('data-message_id', message_id);
-  const nickElement = $('<p>', { class: 'chat-username' }).append(username);
-  const messageElement = $('<p>', { class: 'chat-message' }).append(message);
-  listItem.append(nickElement);
-  listItem.append(messageElement);
-  return listItem;
+const buildElements = ({ username, message, message_id, picture, owner }) => {
+  const listItem = dom.li({
+    class: 'chat-item test-item',
+    'data-message_id': message_id
+  });
+  const nickname = dom.p({ class: 'chat-username' });
+  const chatMessage = dom.p({ class: 'chat-message' });
+  const card = dom.div({ class: `chat-card${owner ? ' own-message' : ''}` });
+  const portrait = dom.img({ src: picture, class: 'portrait' });
+  const portraitSection = dom.div({ class: 'portrait-section' });
+  const chatSection = dom.div({ class: 'chat-section' });
+
+  return listItem(
+    card(portraitSection(portrait), chatSection(nickname(username), chatMessage(message)))
+  );
 };
 
 const loadMessages = async () => {
@@ -46,7 +55,7 @@ const sendMessage = async () => {
 
 $(document).ready(() => {
   loadMessages();
-  setInterval(loadMessages, 3000);
+  setInterval(loadMessages, 2000);
 
   $('#send-message-button').click(sendMessage);
 });
