@@ -2,14 +2,14 @@ extends layout.pug
 
 block content
   #chat
-    header
-      h3 Chat
+    h3 Chat
     ul#chatlist
 
     form(onsubmit="return false;" method='post' )
       .form-group
         input.form-control(type='text' name='message' id='message-input' aria-describedby="message-helper" autocomplete="off" minlength="1" placeholder='Message')
-      button#send-message-button(type="submit" class="btn btn-primary") Send
+      button#send-message-button.btn.waves-effect.waves-light(type="submit") Send
+        i.material-icons.right send
 
   block scripts
     script(src='js/scripts.js' type='module')

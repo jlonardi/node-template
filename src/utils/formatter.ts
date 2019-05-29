@@ -1,4 +1,6 @@
-module.exports = function morganLogFormatter(tokens, req, res) {
+import morgan from 'morgan';
+
+export const morganLogFormatter: morgan.FormatFn = (tokens, req, res) => {
   const addr = tokens['remote-addr'](req, res);
   const addrShortened = addr.replace(/\.\d+\.\d+$/, '.');
   const url = req.originalUrl || req.url;

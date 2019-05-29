@@ -9,14 +9,14 @@ ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFE
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE users (
-  user_id           uuid NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
-  auth_id           varchar(255) NOT NULL,
-  username          varchar(255)
+  user_id       varchar(255) NOT NULL PRIMARY KEY,
+  username      varchar(255),
+  picture       varchar(255)
 );
 
 CREATE TABLE messages (
-  message_id           uuid NOT NULL DEFAULT uuid_generate_v4(),
-  user_id           uuid NOT NULL REFERENCES users(user_id),
-  message           varchar(255) NOT NULL,
-  created_at        timestamp WITH time zone NOT NULL DEFAULT now()
+  message_id    uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id       varchar(255) NOT NULL REFERENCES users(user_id),
+  message       varchar(255) NOT NULL,
+  created_at    timestamp WITH time zone NOT NULL DEFAULT now()
 );

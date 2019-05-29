@@ -36,11 +36,9 @@ const sendMessage = async () => {
   const message = readMessage();
   if (message.length === 0) return;
   try {
-    const { status } = await send({ message: readMessage() });
-    if (status >= 200 && status < 301) {
-      $('#message-input').val('');
-      loadMessages();
-    }
+    await send({ message: readMessage() });
+    $('#message-input').val('');
+    loadMessages();
   } catch (e) {
     console.error(e);
   }
@@ -48,7 +46,7 @@ const sendMessage = async () => {
 
 $(document).ready(() => {
   loadMessages();
-  // setInterval(loadMessages, 5000);
+  setInterval(loadMessages, 3000);
 
   $('#send-message-button').click(sendMessage);
 });

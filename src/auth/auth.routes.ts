@@ -1,8 +1,13 @@
-const express = require('express');
-const passport = require('passport');
-const util = require('util');
-const querystring = require('querystring');
-const { createUserIfNeeded } = require('./auth.service');
+import express from 'express';
+import passport from 'passport';
+import util from 'util';
+import querystring from 'querystring';
+import { createUserIfNeeded } from './auth.service';
+
+export interface IAuthUser {
+  picture?: string;
+  id: string;
+}
 
 const router = express.Router();
 
@@ -11,14 +16,14 @@ router.get(
   passport.authenticate('auth0', {
     scope: 'openid email profile'
   }),
-  (req, res) => {
+  (_req, res) => {
     res.redirect('/');
   }
 );
 
 // Perform the final stage of authentication and redirect to previously requested URL or '/user'
 router.get('/callback', (req, res, next) => {
-  passport.authenticate('auth0', (err, user) => {
+  passport.authenticate('auth0', (err, user: IAuthUser) => {
     if (err) {
       next(err);
       return;
@@ -32,11 +37,12 @@ router.get('/callback', (req, res, next) => {
         next(loginErr);
         return;
       }
-      await createUserIfNeeded(user.id);
-      const { session } = req;
-      const { returnTo } = session;
-      delete req.session.returnTo;
-      res.redirect(returnTo || '/');
+      const created = await createUserIfNeeded(user);
+      if (created) {
+        res.redirect('/username');
+        return;
+      }
+      res.redirect('/');
     });
   })(req, res, next);
 });
@@ -54,7 +60,7 @@ router.get('/logout', (req, res) => {
   });
   logoutURL.search = searchString;
 
-  res.redirect(logoutURL);
+  res.redirect(logoutURL.href);
 });
 
-module.exports = router;
+export const authRoutes = router;
