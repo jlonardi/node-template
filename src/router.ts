@@ -1,8 +1,8 @@
 import path from 'path';
 import express, { RequestHandler } from 'express';
-import { authRoutes } from './auth/auth.routes';
-import { userRoutes } from './user/user.routes';
-import { publicRoutes } from './public/public.routes';
+import { authRoutes } from './routes/auth.routes';
+import { userRoutes } from './routes/user.routes';
+import { publicRoutes } from './routes/public.routes';
 
 const router = express.Router();
 

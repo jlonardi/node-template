@@ -1,5 +1,5 @@
 import express, { RequestHandler } from 'express';
-import * as service from './user.services';
+import * as service from '../services/user.services';
 
 const router = express.Router();
 

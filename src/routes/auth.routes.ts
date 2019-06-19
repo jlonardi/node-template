@@ -2,7 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import util from 'util';
 import querystring from 'querystring';
-import { createUserIfNeeded } from './auth.service';
+import { createUserIfNeeded } from '../services/auth.service';
 
 export interface IAuthUser {
   picture?: string;

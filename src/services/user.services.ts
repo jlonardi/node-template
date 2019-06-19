@@ -1,6 +1,6 @@
 import _ from 'lodash/fp';
-import * as operations from './user.operations';
-import { IAuthUser } from '../auth/auth.routes';
+import * as operations from '../storage/user.operations';
+import { IAuthUser } from '../routes/auth.routes';
 
 export const validUsername = (username: string) => username && username.length > 1;
 

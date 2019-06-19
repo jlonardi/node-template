@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { logger } from '../utils/logger';
-import { getUser, addUser } from '../user/user.operations';
-import { IAuthUser } from './auth.routes';
+import { getUser, addUser } from '../storage/user.operations';
+import { IAuthUser } from '../routes/auth.routes';
 
 export const createUserIfNeeded = async (authenticatedUser: IAuthUser) => {
   const user = await getUser(authenticatedUser.id);

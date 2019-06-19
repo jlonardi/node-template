@@ -1,5 +1,5 @@
 import { logger } from '../utils/logger';
-import { queryAsync, queryRowsAsync } from '../db/client';
+import { queryAsync, queryRowsAsync } from '../db-client/postgres';
 import { SQLError } from '../errors/sql-error';
 
 export interface IMessage {
