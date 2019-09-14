@@ -2,6 +2,8 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/', (req, res) => (req.user ? res.redirect('/chat') : res.render('welcome')));
+router.get('/', (_req, res) => res.redirect('/chat'));
+
+router.get('/landing', (_req, res) => res.render('welcome'));
 
 export const publicRoutes = router;

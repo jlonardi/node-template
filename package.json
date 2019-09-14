@@ -6,6 +6,7 @@
   "scripts": {
     "start": "db-migrate up && node ./build/app.js",
     "postinstall": "npm run build",
+    "start-database": "docker-compose up -d db",
     "dev": "cross-env TS_NODE_FILES=true nodemon --watch src --exec 'ts-node' src/app.ts",
     "build": "npm run compile && npm run static && npm run views",
     "static": "cp -r ./src/static/ ./build/static/",

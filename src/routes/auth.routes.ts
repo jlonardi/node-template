@@ -21,31 +21,19 @@ router.get(
   }
 );
 
-// Perform the final stage of authentication and redirect to previously requested URL or '/user'
-router.get('/callback', (req, res, next) => {
-  passport.authenticate('auth0', (err, user: IAuthUser) => {
-    if (err) {
-      next(err);
+// Perform the final stage of authentication and redirect to previously requested URL or '/username'
+router.get(
+  '/callback',
+  passport.authenticate('auth0', { failureRedirect: '/login' }),
+  async (req, res) => {
+    const created = await createUserIfNeeded(req.user);
+    if (created) {
+      res.redirect('/username');
       return;
     }
-    if (!user) {
-      res.redirect('/login');
-      return;
-    }
-    req.logIn(user, async loginErr => {
-      if (loginErr) {
-        next(loginErr);
-        return;
-      }
-      const created = await createUserIfNeeded(user);
-      if (created) {
-        res.redirect('/username');
-        return;
-      }
-      res.redirect('/');
-    });
-  })(req, res, next);
-});
+    res.redirect('/');
+  }
+);
 
 // Perform session logout and redirect to homepage
 router.get('/logout', (req, res) => {
