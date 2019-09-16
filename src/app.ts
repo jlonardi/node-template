@@ -5,14 +5,12 @@ import bodyParser from 'body-parser';
 import express, { Response, NextFunction } from 'express';
 import session, { SessionOptions } from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
-import morgan from 'morgan';
 import path from 'path';
 import passport from 'passport';
 import * as passportAuth0Srategy from 'passport-auth0';
 import { NotFoundError } from './errors/not-found-error';
 import { appRoutes } from './router';
 import { logger } from './utils/logger';
-import { morganLogFormatter } from './utils/formatter';
 import { IAppError } from './types/errors';
 
 const pgSession = connectPgSimple(session);
@@ -39,7 +37,6 @@ const strategy = new auth0Strategy(
 
 passport.use(strategy);
 
-app.use(morgan(morganLogFormatter));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

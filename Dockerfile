@@ -1,19 +1,22 @@
-FROM node:10.15.3-alpine
+FROM node:10.16.2-alpine
 
 ENV PORT=80
 
 # Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
 COPY package*.json ./
+COPY ./src ./src
+COPY tsconfig.json ./
 
-RUN npm install --only=production
+# Install app dependencies
+RUN npm install
 
-# Bundle app source
-COPY . .
+# Compile app
+RUN npm run build
+
+# Remove dev-dependencies
+RUN npm prune --production
 
 EXPOSE 80
 

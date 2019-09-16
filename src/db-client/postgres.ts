@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-var-requires
 require('dotenv').config();
 import { Pool, QueryResult } from 'pg';
 import named, { IQueryObject, PatchedClient } from 'node-postgres-named';
@@ -15,11 +16,15 @@ interface IAsyncClient {
 const queryAsyncWithTx = async (tx: PatchedClient, queryString: string, values?: IQueryObject) =>
   tx.query(queryString, values).then((res: QueryResult) => res.rows);
 
+const logQuery = (queryString: string, values?: IQueryObject) => {
+  logger.info('SQL query string:');
+  logger.info(queryString);
+  logger.info('Passed values:', values);
+};
+
 const getQueryAsyncWithTx = (client: PatchedClient) => ({
   queryAsync: (queryString: string, values?: IQueryObject) => {
-    logger.info('Add query in transaction:');
-    logger.info(queryString);
-    logger.info('Passed values:', values);
+    logQuery(queryString, values);
     return queryAsyncWithTx(client, queryString, values);
   }
 });
@@ -28,13 +33,10 @@ const getConnection = async (fn: (client: IAsyncClient) => Promise<any[]>) => {
   const originalClient = await pool.connect();
   const client = named.patch(originalClient);
   try {
-    logger.info('Beginning transaction');
-
     await client.query('BEGIN');
     const result = await fn(getQueryAsyncWithTx(client));
     await client.query('COMMIT');
 
-    logger.info('Transaction completed');
     return result;
   } catch (error) {
     logger.error('Transaction failed. Rollbacking tranasction.');
