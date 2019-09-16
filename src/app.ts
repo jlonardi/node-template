@@ -101,7 +101,7 @@ app.use((err: IAppError, _req: any, res: Response, next: NextFunction) => {
     return;
   }
 
-  logger.error(err);
+  logger.error(err.message);
 
   if (err.status === 404) {
     res.render('404');
@@ -110,7 +110,6 @@ app.use((err: IAppError, _req: any, res: Response, next: NextFunction) => {
 
   res.status(err.status || 500);
   res.render('error', {
-    error: err,
     message: errorMessage(err)
   });
 });
