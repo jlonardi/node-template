@@ -42,7 +42,7 @@ const getConnection = async (fn: (client: IAsyncClient) => Promise<any[]>) => {
     logger.error('Transaction failed. Rollbacking tranasction.');
     await client.query('ROLLBACK');
     logger.error(error);
-    throw new SQLError(error);
+    throw new SQLError(error as string);
   } finally {
     client.release();
   }
