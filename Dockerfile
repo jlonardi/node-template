@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 COPY ./src ./src
+COPY ./migrations ./migrations
 COPY tsconfig.json ./
 
 # Install app dependencies

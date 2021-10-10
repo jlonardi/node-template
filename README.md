@@ -43,3 +43,25 @@ The application can be run inside a docker container. The containers are build u
 ```
 docker-compose up -d ui
 ```
+
+**NOTE ABOUT THE DATABASE URL**
+
+If your DATABASE_URL refers to 127.0.0.1, which is the loopback adapter (more here). This means "connect to myself".
+
+When running both applications (without using Docker) on the same host, they are both addressable on the same adapter (also known as localhost).
+
+When running both applications in containers they are not both on localhost as before. Instead you need to point the web container to the db container's IP address on the docker0 adapter - which docker-compose sets for you.
+
+Change:
+
+127.0.0.1 to CONTAINER_NAME (e.g. db)
+
+Example:
+
+`DATABASE_URL: postgres://username:pgpassword@127.0.0.1:5432/mydatabase`
+
+to
+
+```
+DATABASE_URL: postgres://username:pgpassword@db:5432/mydatabase
+```

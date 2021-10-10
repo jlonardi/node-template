@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3'
 
 services:
   db:
@@ -7,18 +7,21 @@ services:
     container_name: node-app-db
     ports:
       - '5432:5432'
+    env_file: .env
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: node-app-db
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
+
   ui:
+    links:
+      - db
     build:
       context: .
       dockerfile: Dockerfile
     container_name: node-app
     ports:
       - '3000:80'
-    links:
-      - db
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/node-app-db
+    env_file: .env
+
+    stdin_open: true
