@@ -52,7 +52,7 @@ export const sendMessage = async (userId: string, message: string): Promise<IMes
   );
 
 export const getMessages = async (): Promise<IMessage[]> =>
-  await queryRowsAsync(
+  queryRowsAsync(
     `SELECT user_id, username, picture, message, message_id, messages.created_at FROM messages NATURAL JOIN users
       ORDER BY created_at DESC`
   );

@@ -4,9 +4,8 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "no-default-export": true,
-    "no-implicit-dependencies": true,
+    "no-implicit-dependencies": [true, "dev"],
     "no-submodule-imports": false,
-    "no-relative-imports": true,
     "variable-name": [true, "allow-leading-underscore"]
   }
 }

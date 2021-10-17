@@ -19,7 +19,6 @@ router.get('/chat', requiresUsername, (_req, res) => res.render('chat'));
 router.post(
   '/messages',
   asyncRoute(async (req, res) => {
-    console.log('here we are');
     const messages = await service.sendMessage(req.user.id, req.body.message);
     res.json(messages);
   })
