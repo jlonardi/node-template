@@ -110,9 +110,6 @@ header {
   max-height: 50vh;
   min-height: 50vh;
   overflow: scroll;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
 }
 
 #chat-header {
