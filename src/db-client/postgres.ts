@@ -10,11 +10,13 @@ const pool = new Pool({
 });
 
 interface IAsyncClient {
-  queryAsync(queryString: string, values?: IQueryObject): Promise<any[]>;
+  queryAsync(queryString: string, values?: IQueryObject): Promise<any>;
 }
 
-const queryAsyncWithTx = async (tx: PatchedClient, queryString: string, values?: IQueryObject) =>
-  tx.query(queryString, values).then((res: QueryResult) => res.rows);
+const queryAsyncWithTx = async (tx: PatchedClient, queryString: string, values?: IQueryObject) => {
+  const res: QueryResult = await tx.query(queryString, values);
+  return res.rows;
+};
 
 const logQuery = (queryString: string, values?: IQueryObject) => {
   logger.info('SQL query string:');
@@ -29,7 +31,7 @@ const getQueryAsyncWithTx = (client: PatchedClient) => ({
   }
 });
 
-const getConnection = async (fn: (client: IAsyncClient) => Promise<any[]>) => {
+const getConnection = async <T>(fn: (client: IAsyncClient) => Promise<T[]> | Promise<T>) => {
   const originalClient = await pool.connect();
   const client = named.patch(originalClient);
   try {
@@ -48,17 +50,15 @@ const getConnection = async (fn: (client: IAsyncClient) => Promise<any[]>) => {
   }
 };
 
-export const queryRowsAsync = (queryString: string, values?: IQueryObject) =>
+export const queryRowsAsync = (queryString: string, values?: IQueryObject): Promise<any[]> =>
   getConnection((client: IAsyncClient) => client.queryAsync(queryString, values));
 
 export const queryAsync = (queryString: string, values?: IQueryObject): Promise<any> =>
-  getConnection(
-    async (client: IAsyncClient): Promise<any> => {
-      const rows = await client.queryAsync(queryString, values);
-      return rows[0];
-    }
-  );
+  getConnection(async (client: IAsyncClient) => {
+    const rows = await client.queryAsync(queryString, values);
+    return rows[0];
+  });
 
-pool.on('error', err => {
+pool.on('error', (err: Error) => {
   logger.error('An idle client has experienced an error', err.stack);
 });
